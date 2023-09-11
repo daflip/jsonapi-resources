@@ -753,8 +753,8 @@ module JSONAPI
         else
           join_manager = options.dig(:_relation_helper_options, :join_manager)
           sort_field = join_manager ? get_aliased_field(field, join_manager) : field
-          options[:_relation_helper_options][:sort_fields].push("#{sort_field}")
-          records = records.order(Arel.sql("#{sort_field} #{direction}"))
+          options[:_relation_helper_options][:sort_fields].push("#{records.connection.quote_column_name(sort_field)}")
+          records = records.order(Arel.sql("#{records.connection.quote_column_name(sort_field)} #{direction}"))
         end
         records
       end
